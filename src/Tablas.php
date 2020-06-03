@@ -59,8 +59,7 @@ class Tablas {
 
 
   protected function entities(){
-    require_once("tablas/entity/Main.php");
-    require_once("tablas/entity/Entity.php");
+    require_once("entity/Entity.php");
 
     foreach($this->tablesInfo as $tableInfo){
       $self = new ClassEntity($tableInfo["name"], $tableInfo["alias"], $tableInfo["fields"]);
@@ -70,12 +69,12 @@ class Tablas {
 
   //
   protected function fields(){
-    require_once("tablas/field/Field.php");
+    require_once("field/Field.php");
 
     foreach($this->tablesInfo as $tableInfo){
       foreach ( $tableInfo["fields"] as $fieldInfo) {
 
-        $gen = new GenerateClassFieldMain($tableInfo["name"], $fieldInfo);
+        $gen = new GenerateClassField($tableInfo["name"], $fieldInfo);
         $gen->generate();
       }
     }
@@ -83,7 +82,7 @@ class Tablas {
 
 
   public function structure(){
-    require_once("tablas/Structure.php");
+    require_once("Structure.php");
     $gen = new GenerateConfigStructure($this->tablesInfo);
     $gen->generate();
   }

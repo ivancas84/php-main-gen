@@ -2,7 +2,7 @@
 
 require_once("GenerateFile.php");
 require_once("function/snake_case_to.php");
-require_once("tablas/entity/method/GetFields.php");
+require_once("entity/method/GetFields.php");
 
 class ClassEntity extends GenerateFile{
 
@@ -36,7 +36,7 @@ class ClassEntity extends GenerateFile{
 require_once(\"class/model/Entity.php\");
 require_once(\"class/model/Field.php\");
 
-class " . snake_case_to("XxYy", $this->tableName) . "EntityMain extends Entity {
+class _" . snake_case_to("XxYy", $this->tableName) . "Entity extends Entity {
   public \$name = \"" . $this->tableName . "\";
   public \$alias = \"" . $this->tableAlias . "\";
  
