@@ -63,11 +63,8 @@ class Tablas {
     require_once("tablas/entity/Entity.php");
 
     foreach($this->tablesInfo as $tableInfo){
-      $self = new ClassEntityMain($tableInfo["name"], $tableInfo["alias"], $tableInfo["fields"]);
+      $self = new ClassEntity($tableInfo["name"], $tableInfo["alias"], $tableInfo["fields"]);
       $self->generate();
-
-      $gen = new ClassEntity($tableInfo["name"]);
-      $gen->generateIfNotExists();
     }
   }
 
@@ -91,24 +88,12 @@ class Tablas {
     $gen->generate();
   }
 
-  public function includes(){
-    require_once("tablas/EntityClasses.php");
-    $gen = new IncludeEntityClasses($this->tablesInfo);
-    $gen->generate();
-
-    require_once("tablas/UserEntityClasses.php");
-    $gen = new UserEntityClasses($this->tablesInfo);
-    $gen->generateIfNotExists();
-  }
-
-
 
   //generar archivos
   public function generate(){
     $this->entities();
     $this->fields();
     $this->structure();
-    //$this->includes();
   }
 
 
