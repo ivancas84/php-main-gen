@@ -74,16 +74,12 @@ class Tablas {
   //
   protected function fields(){
     require_once("tablas/field/Field.php");
-    require_once("tablas/field/Main.php");
 
     foreach($this->tablesInfo as $tableInfo){
       foreach ( $tableInfo["fields"] as $fieldInfo) {
 
         $gen = new GenerateClassFieldMain($tableInfo["name"], $fieldInfo);
         $gen->generate();
-
-        $gen = new GenerateClassField($tableInfo["name"], $fieldInfo);
-        $gen->generateIfNotExists();
       }
     }
   }
