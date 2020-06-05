@@ -86,10 +86,11 @@ class _Field" . snake_case_to("XxYy", $this->tableName) . snake_case_to("XxYy", 
   protected function getEntityRef(){
     if(($this->fieldInfo["field_type"] == "mu") || ($this->fieldInfo["field_type"] == "_u")){
       $this->string .= "
-  public function getEntityRef(){ return Entity::getInstanceRequire('" .  $this->tableName . "'); }
+  public function getEntityRef(){ return Entity::getInstanceRequire('" . $this->fieldInfo["referenced_table_name"] . "'); }
 ";
     }
   }
+
 
   /**
    * generar codigo de la clase
