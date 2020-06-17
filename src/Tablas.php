@@ -27,7 +27,7 @@ class Tablas {
       $tableInfo["alias"] = Aliases::createAndGetAlias($tableName, $tableAliases, 4);
       array_push($tableAliases, $tableInfo["alias"]);
 
-      $fieldAliases = array(); //alias de los fields de la tabla
+      $fieldAliases = array( $tableInfo["alias"] ); //alias de los fields de la tabla
       $fieldsInfo = $this->db-> fieldsInfo ( $tableName ) ;
       $fieldsInfo_ = array();
 
