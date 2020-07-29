@@ -14,7 +14,7 @@ class ClassEntity extends GenerateFile{
     $this->tableName = $tableName;
     $this->tableAlias = $tableAlias;
     $this->fieldsInfo =  $fieldsInfo;
-    $dir = $_SERVER["DOCUMENT_ROOT"]."/".PATH_ROOT."/class/model/entity/";
+    $dir = $_SERVER["DOCUMENT_ROOT"]."/".PATH_SRC."/class/model/entity/";
     $file = "_".snake_case_to("XxYy", $this->tableName).".php";
     parent::__construct($dir, $file);
 
