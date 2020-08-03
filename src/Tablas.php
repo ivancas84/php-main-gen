@@ -1,16 +1,16 @@
 <?php
 
-require_once("class/model/db/My.php");
+require_once("class/model/Db.php");
 require_once("class/tools/Aliases.php");
 
 class Tablas {
 
-  protected $db; //DbSqlMy. Conexion con base de datos mysql
+  protected $db; //Conexion con base de datos mysql
   protected $tablesInfo; //array. Informacion de las tablas
   protected $reserved = array(); //array. Tablas reservadas, no seran tenidas en cuenta en la generacion
 
   public function __construct()  {
-    $this->db = new DbSqlMy (DATA_HOST, DATA_USER, DATA_PASS, DATA_DBNAME, DATA_SCHEMA);
+    $this->db = Db::open();
     $this->reserved = explode(" ", DISABLE_ENTITIES);
     array_push($this->reserved, "transaction", "transaccion");
     $this->defineTablesInfo();
@@ -19,7 +19,7 @@ class Tablas {
   protected function defineTablesInfo(){
     $this->tablesInfo = array();
     $tableAliases = array();
-    $tableNames = $this->db->tablesName(); //nombre de las tablas
+    $tableNames = $this->db->tables_name(); //nombre de las tablas
     foreach($tableNames as $tableName){
       if(in_array($tableName, $this->reserved)) continue; //omitimos la tablas reservadas
       $tableInfo = array();
@@ -28,7 +28,7 @@ class Tablas {
       array_push($tableAliases, $tableInfo["alias"]);
 
       $fieldAliases = array( $tableInfo["alias"] ); //alias de los fields de la tabla
-      $fieldsInfo = $this->db-> fieldsInfo ( $tableName ) ;
+      $fieldsInfo = $this->db-> fields_info ( $tableName ) ;
       $fieldsInfo_ = array();
 
       foreach ( $fieldsInfo as $f) {
