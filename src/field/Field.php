@@ -81,14 +81,14 @@ class _Field" . snake_case_to("XxYy", $this->tableName) . snake_case_to("XxYy", 
 
   protected function getEntity(){
     $this->string .= "
-  public function getEntity(){ return Entity::getInstanceRequire('" .  $this->tableName . "'); }
+  public function getEntity(){ return \$this->container->getEntity('" .  $this->tableName . "'); }
 ";
   }
 
   protected function getEntityRef(){
     if(($this->fieldInfo["field_type"] == "mu") || ($this->fieldInfo["field_type"] == "_u")){
       $this->string .= "
-  public function getEntityRef(){ return Entity::getInstanceRequire('" . $this->fieldInfo["referenced_table_name"] . "'); }
+  public function getEntityRef(){ return \$this->container->getEntity('" . $this->fieldInfo["referenced_table_name"] . "'); }
 ";
     }
   }

@@ -17,13 +17,14 @@ class GenerateConfigStructure extends GenerateFile {
   protected function generateCode() {
     $this->string .= "<?php
 
-require_once(\"class/model/Entity.php\");
+require_once(\"class/Container.php\");
 
+\$container = new Container();
 \$structure = array (
 " ;
 
     foreach ( $this->tablesInfo as $tableInfo ) {
-      $this->string .= "  Entity::getInstanceRequire(\"" . $tableInfo["name"] . "\"),
+      $this->string .= "  \$container->getEntity(\"" . $tableInfo["name"] . "\"),
 " ;
     }
 
