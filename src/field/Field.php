@@ -54,7 +54,9 @@ class _Field" . snake_case_to("XxYy", $this->tableName) . snake_case_to("XxYy", 
   protected function attributes(){
     $unique = ($this->fieldInfo["unique"])? "true":"false";
     $not_null = ($this->fieldInfo["not_null"])? "true":"false";
-    $default = (!empty($this->fieldInfo["field_default"]) && strtolower($this->fieldInfo["field_default"]) != "null" ) ? "\"" . $this->fieldInfo["field_default"] . "\"" : "false";
+    $default = (isset($this->fieldInfo["field_default"])
+                && $this->fieldInfo["field_default"] != "" 
+                && strtolower($this->fieldInfo["field_default"]) != "null" ) ? "\"" . trim($this->fieldInfo["field_default"], "'") . "\"" : "null";
     $length = (!empty($this->fieldInfo["length"])) ? "\"" . $this->fieldInfo["length"] . "\"" : "false";
     $main = ($this->fieldInfo["field_type"] == "pk") ? "true" : "false";
 
@@ -79,14 +81,14 @@ class _Field" . snake_case_to("XxYy", $this->tableName) . snake_case_to("XxYy", 
 
   protected function getEntity(){
     $this->string .= "
-  public function getEntity(){ return Entity::getInstanceRequire('" .  $this->tableName . "'); }
+  public function getEntity(){ return \$this->container->getEntity('" .  $this->tableName . "'); }
 ";
   }
 
   protected function getEntityRef(){
     if(($this->fieldInfo["field_type"] == "mu") || ($this->fieldInfo["field_type"] == "_u")){
       $this->string .= "
-  public function getEntityRef(){ return Entity::getInstanceRequire('" . $this->fieldInfo["referenced_table_name"] . "'); }
+  public function getEntityRef(){ return \$this->container->getEntity('" . $this->fieldInfo["referenced_table_name"] . "'); }
 ";
     }
   }

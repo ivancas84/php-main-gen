@@ -54,7 +54,7 @@ class _" . snake_case_to("XxYy", $this->tableName) . "Entity extends Entity {
     foreach($fieldsInfo as $fieldInfo){
       if($fieldInfo["primary_key"]){
         $this->string .= "  public function getPk(){
-    return Field::getInstanceRequire(\"" . $tableName . "\", \"" . $fieldInfo["field_name"] . "\");
+    return \$this->container->getField(\"" . $tableName . "\", \"" . $fieldInfo["field_name"] . "\");
   }
 ";
       }

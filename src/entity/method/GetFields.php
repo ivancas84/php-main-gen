@@ -34,7 +34,7 @@ class ClassEntity_getFields{
 ";
     
     foreach($this->fieldsInfo as $fieldInfo){
-      $this->string .= "      Field::getInstanceRequire(\"" .$this->tableName . "\", \"" . $fieldInfo["field_name"] . "\"),
+      $this->string .= "      \$this->container->getField(\"" .$this->tableName . "\", \"" . $fieldInfo["field_name"] . "\"),
 ";      
     }
 

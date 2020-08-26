@@ -5,15 +5,13 @@ require_once("class/tools/Aliases.php");
 
 class Tablas {
 
-  protected $db; //Conexion con base de datos mysql
-  protected $tablesInfo; //array. Informacion de las tablas
-  protected $reserved = array(); //array. Tablas reservadas, no seran tenidas en cuenta en la generacion
+  public $db; //Conexion con base de datos mysql
+  public $tablesInfo; //array. Informacion de las tablas
+  public $reserved = array(); //array. Tablas reservadas, no seran tenidas en cuenta en la generacion
 
   public function __construct()  {
-    $this->db = Db::open();
     $this->reserved = explode(" ", DISABLE_ENTITIES);
     array_push($this->reserved, "transaction", "transaccion");
-    $this->defineTablesInfo();
   }
 
   protected function defineTablesInfo(){
@@ -90,6 +88,7 @@ class Tablas {
 
   //generar archivos
   public function generate(){
+    $this->defineTablesInfo();
     $this->entities();
     $this->fields();
     $this->structure();
