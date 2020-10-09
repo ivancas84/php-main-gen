@@ -2,7 +2,6 @@
 
 require_once("GenerateFile.php");
 require_once("function/snake_case_to.php");
-require_once("entity/method/GetFields.php");
 
 class ClassEntity extends GenerateFile{
 
@@ -23,10 +22,12 @@ class ClassEntity extends GenerateFile{
 
   protected function generateCode(){
     $this->start();
-    $this->methodGetPk($this->tableName, $this->fieldsInfo);
-    $this->methodGetFieldsNf($this->tableName, $this->fieldsInfo);
-    $this->methodGetFieldsMu($this->tableName, $this->fieldsInfo);
-    $this->methodGetFields_U($this->tableName, $this->fieldsInfo);
+    $this->attribNf();
+    $this->attribMu();
+    $this->attrib_u();
+    $this->attribNotNull();
+    $this->attribUnique();
+    $this->attribAdmin();
     $this->end();
   }
 
@@ -39,7 +40,6 @@ require_once(\"class/model/Field.php\");
 class _" . snake_case_to("XxYy", $this->tableName) . "Entity extends Entity {
   public \$name = \"" . $this->tableName . "\";
   public \$alias = \"" . $this->tableAlias . "\";
- 
 ";
   }
 
@@ -50,56 +50,73 @@ class _" . snake_case_to("XxYy", $this->tableName) . "Entity extends Entity {
 " ;
 }
 
-  protected function methodGetPk($tableName, array $fieldsInfo){
-    foreach($fieldsInfo as $fieldInfo){
-      if($fieldInfo["primary_key"]){
-        $this->string .= "  public function getPk(){
-    return \$this->container->getField(\"" . $tableName . "\", \"" . $fieldInfo["field_name"] . "\");
-  }
+  protected function attribAdmin() {
+    $fields = [];
+    foreach($this->fieldsInfo as $fieldInfo){
+      array_push($fields, $fieldInfo["field_name"]);
+    }
+    $this->string .= "  public \$admin = ['" . implode("', '", $fields) . "'];
+
 ";
-      }
-    }
   }
 
-  protected function methodGetFieldsNf($tableName, array $fieldsInfo){
-    $fieldsInfoNf = array();
-    foreach($fieldsInfo as $fieldInfo){
+  protected function attribNotNull() {
+    $fields = [];
+    foreach($this->fieldsInfo as $fieldInfo){
+      if($fieldInfo["not_null"]) array_push($fields, $fieldInfo["field_name"]);
+    }
+    $this->string .= "  public \$notNull = ['" . implode("', '", $fields) . "'];
+";
+  }
+
+  protected function attribUnique() {
+    $unique = [];
+    foreach($this->fieldsInfo as $fieldInfo){
+      if($fieldInfo["unique"]) array_push($unique, $fieldInfo["field_name"]);
+    }
+    $this->string .= "  public \$unique = ['" . implode("', '", $unique) . "'];
+";
+  }
+
+  protected function attribNf(){
+    $fields = array();
+    foreach($this->fieldsInfo as $fieldInfo){
       if ((!$fieldInfo["primary_key"]) && (!$fieldInfo["foreign_key"])) {
-        array_push($fieldsInfoNf, $fieldInfo);
+        array_push($fields, $fieldInfo["field_name"]);
       }
     }
 
-    if(!count($fieldsInfoNf)) $this->string .= "";
-    $gen = new ClassEntity_getFields($tableName, $fieldsInfoNf, "getFieldsNf");
-    $this->string .= $gen->generate();
+    $value = (!count($fields)) ? "" : "'" . implode("', '", $fields) . "'";
+    $this->string .= "  public \$nf = [{$value}];
+";
   }
 
-  protected function methodGetFieldsMu($tableName, array $fieldsInfo){
-    $fieldsInfoMu = array();
-    foreach($fieldsInfo as $fieldInfo){
-
+  protected function attribMu(){
+    $fields = array();
+    foreach($this->fieldsInfo as $fieldInfo){
       if ( ( $fieldInfo["foreign_key"] ) && ( !$fieldInfo["unique"] ) && ( !$fieldInfo["primary_key"] ) ) {
-        array_push($fieldsInfoMu, $fieldInfo);
+        array_push($fields, $fieldInfo["field_name"]);
       }
     }
 
-    if(!count($fieldsInfoMu)) return;
-    $self = new ClassEntity_getFields($tableName, $fieldsInfoMu, "getFieldsMu");
-    $this->string .= $self->generate();
+    $value = (!count($fields)) ? "" : "'" . implode("', '", $fields) . "'";
+    $this->string .= "  public \$mu = [{$value}];
+";
   }
 
-  protected function methodGetFields_U($tableName, array $fieldsInfo){
-    $fieldsInfo_U = array();
-    foreach($fieldsInfo as $fieldInfo){
+  protected function attrib_u(){
+    $fields = array();
+    foreach($this->fieldsInfo as $fieldInfo){
       if ( ( $fieldInfo["foreign_key"] ) && ( $fieldInfo["unique"] ) && ( !$fieldInfo["primary_key"] ) ) {
-        array_push($fieldsInfo_U, $fieldInfo);
+        array_push($fields, $fieldInfo["field_name"]);
       }
     }
 
-    if(!count($fieldsInfo_U)) return;
-    $self = new ClassEntity_getFields($tableName, $fieldsInfo_U, "getFields_U");
-    $this->string .= $self->generate();
+    $value = (!count($fields)) ? "" : "'" . implode("', '", $fields) . "'";
+    $this->string .= "  public \$_u = [{$value}];
+";
   }
+
 
 
 }
