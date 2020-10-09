@@ -52,43 +52,28 @@ class _Field" . snake_case_to("XxYy", $this->tableName) . snake_case_to("XxYy", 
   }
 
   protected function attributes(){
-    $unique = ($this->fieldInfo["unique"])? "true":"false";
-    $not_null = ($this->fieldInfo["not_null"])? "true":"false";
     $default = (isset($this->fieldInfo["field_default"])
                 && $this->fieldInfo["field_default"] != "" 
                 && strtolower($this->fieldInfo["field_default"]) != "null" ) ? "\"" . trim($this->fieldInfo["field_default"], "'") . "\"" : "null";
     $length = (!empty($this->fieldInfo["length"])) ? "\"" . $this->fieldInfo["length"] . "\"" : "false";
-    $main = ($this->fieldInfo["field_type"] == "pk") ? "true" : "false";
 
     $this->string .= "
   public \$type = \"" . $this->fieldInfo["data_type"] . "\";
   public \$fieldType = \"" . $this->fieldInfo["field_type"] . "\";
-  public \$unique = " . $unique . ";
-  public \$notNull = " . $not_null . ";
   public \$default = " . $default . ";
-  public \$length = " . $length . ";
-  public \$main = " . $main . ";
+  public \$length = " . $length . ";  
   public \$name = \"" . $this->fieldInfo["field_name"] . "\";
   public \$alias = \"" . $this->fieldInfo["alias"] . "\";
-
-";
-
-
-  }
-
-
-
-
-  protected function getEntity(){
-    $this->string .= "
-  public function getEntity(){ return \$this->container->getEntity('" .  $this->tableName . "'); }
+  public \$entityName = \"" . $this->tableName . "\";
 ";
   }
 
-  protected function getEntityRef(){
+
+
+
+  protected function attribEntityRefName(){
     if(($this->fieldInfo["field_type"] == "mu") || ($this->fieldInfo["field_type"] == "_u")){
-      $this->string .= "
-  public function getEntityRef(){ return \$this->container->getEntity('" . $this->fieldInfo["referenced_table_name"] . "'); }
+      $this->string .= "  public \$entityRefName = \"" . $this->fieldInfo["referenced_table_name"] . "\";  
 ";
     }
   }
@@ -101,8 +86,7 @@ class _Field" . snake_case_to("XxYy", $this->tableName) . snake_case_to("XxYy", 
   protected function generateCode(){
     $this->start();
     $this->attributes();
-    $this->getEntity();
-    $this->getEntityRef();
+    $this->attribEntityRefName();
     $this->end();
   }
 
