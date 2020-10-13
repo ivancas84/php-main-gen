@@ -106,11 +106,5 @@ class _" . snake_case_to("XxYy", $this->tableName) . "Entity extends Entity {
 ";
   }
 
-  protected function attribRel(){
-    require_once("entity/AttribRel.php");
-    $g = new Entity_attribRel($this->getEntity());
-    $this->string .=  $g->generate();
-  }
-
 
 }
