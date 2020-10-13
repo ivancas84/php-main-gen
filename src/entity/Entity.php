@@ -27,7 +27,6 @@ class ClassEntity extends GenerateFile{
     $this->attrib_u();
     $this->attribNotNull();
     $this->attribUnique();
-    $this->attribAdmin();
     $this->end();
   }
 
@@ -49,16 +48,6 @@ class _" . snake_case_to("XxYy", $this->tableName) . "Entity extends Entity {
 }
 " ;
 }
-
-  protected function attribAdmin() {
-    $fields = [];
-    foreach($this->fieldsInfo as $fieldInfo){
-      array_push($fields, $fieldInfo["field_name"]);
-    }
-    $this->string .= "  public \$admin = ['" . implode("', '", $fields) . "'];
-
-";
-  }
 
   protected function attribNotNull() {
     $fields = [];
@@ -117,6 +106,11 @@ class _" . snake_case_to("XxYy", $this->tableName) . "Entity extends Entity {
 ";
   }
 
+  protected function attribRel(){
+    require_once("entity/AttribRel.php");
+    $g = new Entity_attribRel($this->getEntity());
+    $this->string .=  $g->generate();
+  }
 
 
 }
