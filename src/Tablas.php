@@ -7,7 +7,9 @@ require_once("class/tools/Aliases.php");
 class Tablas {
 
   public $tablesInfo; //array. Informacion de las tablas
-  public $reserved = array(); //array. Tablas reservadas, no seran tenidas en cuenta en la generacion
+  public $reserved = []; //array. Tablas reservadas, no seran tenidas en cuenta en la generacion
+  public $tableAliases = [];
+  public $fieldAliases = [];
 
   public function __construct()  {
     $this->container = new Container();
@@ -18,21 +20,21 @@ class Tablas {
 
   protected function defineTablesInfo(){
     $this->tablesInfo = array();
-    $tableAliases = array();
     $tableNames = $this->container->getDb()->tables_name(); //nombre de las tablas
     foreach($tableNames as $tableName){
       if(in_array($tableName, $this->reserved)) continue; //omitimos la tablas reservadas
       $tableInfo = array();
       $tableInfo["name"] = $tableName;
-      $tableInfo["alias"] = Aliases::createAndGetAlias($tableName, $tableAliases, 4);
-      array_push($tableAliases, $tableInfo["alias"]);
+      $tableInfo["alias"] = Aliases::createAndGetAlias($tableName, $this->tableAliases, 4);
+      array_push($this->tableAliases, $tableInfo["alias"]);
 
-      $fieldAliases = array( $tableInfo["alias"] ); //alias de los fields de la tabla
+      $this->fieldAliases[$tableName] = array( $tableInfo["alias"] ); //alias de los fields de la tabla
       $fieldsInfo = $this->container->getDb()-> fields_info ( $tableName ) ;
       $fieldsInfo_ = array();
 
       foreach ( $fieldsInfo as $f) {
-        $f["alias"] = Aliases::createAndGetAlias($f["field_name"], $fieldAliases);
+        $f["alias"] = Aliases::createAndGetAlias($f["field_name"], $this->fieldAliases[$tableName]);
+        array_push($this->fieldAliases[$tableName], $f["alias"]);
 
         if($f["primary_key"]){
           $f["unique"] = true;
@@ -50,13 +52,11 @@ class Tablas {
         }
 
         array_push($fieldsInfo_, $f);
-        array_push($fieldAliases, $f["alias"]);
       }
       $tableInfo["fields"] = $fieldsInfo_;
       array_push($this->tablesInfo, $tableInfo);
     }
   }
-
 
   public function entities(){
     require_once("entity/Entity.php");
@@ -78,6 +78,7 @@ class Tablas {
       }
     }
   }
+
 
   public function functionGetEntityNames(){
     require_once("function/GetEntityNames.php");
