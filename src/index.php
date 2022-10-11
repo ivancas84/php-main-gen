@@ -3,9 +3,17 @@
 //controlador para generar la estructura php de mapeo de base de datos
 require("../config/config.php"); 
 
-require_once("Tablas.php");
-$gen = new Tablas();
+require_once("Tables.php");
+$tables = new Tables();
 
-$gen->entities();
-$gen->fields();
-$gen->functionGetEntityNames();
+
+require_once("Entity.php");
+$self = new ClassEntity($tables->tablesInfo);
+$self->generate();
+
+require_once("Field.php");
+foreach($tables->tablesInfo as $tableInfo){
+    $gen = new GenerateClassField($tableInfo);
+    $gen->generate();
+}
+
