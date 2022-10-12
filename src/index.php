@@ -1,6 +1,10 @@
 <?php
 
-//controlador para generar la estructura php de mapeo de base de datos
+/**
+ * Mapear la estructura de la base de datos en archivos JSON
+ * Respetar el orden 
+ *
+ */
 require("../config/config.php"); 
 
 require_once("Tables.php");
@@ -17,3 +21,15 @@ foreach($tables->tablesInfo as $tableInfo){
     $gen->generate();
 }
 
+require_once("entityTreeJson/EntityTreeJson.php");
+$gen = new EntityTreeJson();
+$gen->generate();
+
+require_once("entityRelJson/EntityRelJson.php");
+$gen = new EntityRelJson();
+$gen->generate();
+
+
+require_once("PublicScope.php");
+$gen = new PublicScope();
+$gen->generateIfNotExists();

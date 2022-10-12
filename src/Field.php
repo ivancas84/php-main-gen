@@ -179,6 +179,7 @@ class GenerateClassField extends GenerateFile {
       }
     }
     if(!empty($field["length"])) {
+      $field["length"] = str_replace(",",".",$field["length"]);
       $this->string .= "    \"length\": " . $field["length"] . ",
 ";
     } 
