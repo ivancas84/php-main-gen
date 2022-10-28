@@ -1,8 +1,8 @@
 <?php
 
-require_once("class/model/Db.php");
-require_once("class/Container.php");
-require_once("class/tools/Aliases.php");
+require_once("model/Db.php");
+require_once("Container.php");
+require_once("tools/Aliases.php");
 
 class Tables {
 
@@ -22,9 +22,9 @@ class Tables {
    * Retornar array con el nombre de las tablas de la base de datos
    */
   public function tablesName () {  
-    $sql = "SHOW TABLES FROM " . $this->container->getDb()->dbname . ";";
-    $result = $this->container->getDb()->query($sql);
-    $response = (!$result) ? false : $this->container->getDb()->fetch_all_columns ( $result , 0 );
+    $sql = "SHOW TABLES FROM " . $this->container->db()->dbname . ";";
+    $result = $this->container->db()->query($sql);
+    $response = (!$result) ? false : $this->container->db()->fetch_all_columns ( $result , 0 );
     $result->free();
     return $response;
   }
@@ -36,7 +36,7 @@ class Tables {
    * No esta contemplado en la consulta a la base de datos el caso de que la pk sea clave foranea.
    */
   public function fieldsInfo ( $table ) {
-     $db = $this->container->getDb();
+     $db = $this->container->db();
       $sql = "
   SELECT
   DISTINCT COLUMNS.COLUMN_NAME, COLUMNS.COLUMN_DEFAULT, COLUMNS.IS_NULLABLE, COLUMNS.DATA_TYPE, COLUMNS.COLUMN_TYPE, COLUMNS.CHARACTER_MAXIMUM_LENGTH, COLUMNS.NUMERIC_PRECISION, COLUMNS.NUMERIC_SCALE, COLUMNS.COLUMN_KEY, COLUMNS.EXTRA,
