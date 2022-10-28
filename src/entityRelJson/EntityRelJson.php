@@ -12,7 +12,7 @@ class EntityRelJson extends GenerateFile {
   public function __construct() {
     $string = file_get_contents($_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . PATH_SRC . DIRECTORY_SEPARATOR . "model" . DIRECTORY_SEPARATOR . "entity-tree.json");
     $this->tree = json_decode($string, true);
-    parent::__construct($_SERVER["DOCUMENT_ROOT"]."/".PATH_SRC."/model/","entity-relations.json");
+    parent::__construct($_SERVER["DOCUMENT_ROOT"]."/".PATH_ROOT."/model/","entity-relations.json");
   }
 
   protected function generateCode() {

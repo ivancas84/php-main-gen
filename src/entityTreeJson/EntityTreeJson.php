@@ -8,7 +8,7 @@ require_once("GenerateFile.php");
 class EntityTreeJson extends GenerateFile {
 
   public function __construct() {
-    parent::__construct($_SERVER["DOCUMENT_ROOT"]."/".PATH_SRC."/model/","entity-tree.json");
+    parent::__construct($_SERVER["DOCUMENT_ROOT"]."/".PATH_ROOT."/model/","entity-tree.json");
   }
 
   protected function generateCode() {

@@ -26,7 +26,7 @@ class GenerateClassField extends GenerateFile {
     $this->table = $table;
 
     parent::__construct(
-      $_SERVER["DOCUMENT_ROOT"]."/".PATH_SRC."/model/fields/",
+      $_SERVER["DOCUMENT_ROOT"]."/".PATH_ROOT."/model/fields/",
       "_". $this->table["name"] . ".json"
     );
   }

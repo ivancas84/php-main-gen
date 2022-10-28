@@ -11,7 +11,7 @@ class ClassEntity extends GenerateFile{
 
   public function __construct($tables) {
     $this->tables = $tables;
-    $dir = $_SERVER["DOCUMENT_ROOT"]."/".PATH_SRC."/model/";
+    $dir = $_SERVER["DOCUMENT_ROOT"]."/".PATH_ROOT."/model/";
     $file = "_entities.json";
     parent::__construct($dir, $file);
   }
