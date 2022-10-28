@@ -25,11 +25,12 @@ class EntityRelJsonElement extends GenerateEntity {
 ";
   }
   
-  protected function body(array $fields) {
+  protected function body(array $fields, $parentId = null) {
+    $parentId = ($parentId) ? "\"{$parentId}\"" : "null";
     foreach ($fields as $fieldId => $value) {
-      $this->string .= "    \"{$fieldId}\": {\"field_name\":\"{$value['field_name']}\", \"entity_name\":\"{$value['entity_name']}\"},
+      $this->string .= "    \"{$fieldId}\": {\"field_name\":\"{$value['field_name']}\", \"entity_name\":\"{$value['entity_name']}\", \"parent_id\":" . $parentId . "},
 ";
-      if(count($value["children"])) $this->body($value["children"]);
+      if(count($value["children"])) $this->body($value["children"], $fieldId);
     }
    
   }
