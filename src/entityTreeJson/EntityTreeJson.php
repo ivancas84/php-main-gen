@@ -14,7 +14,7 @@ class EntityTreeJson extends GenerateFile {
   protected function generateCode() {
     $container = new Container();
     $this->start();
-    foreach($container->getStructure() as $entity) {
+    foreach($container->structure() as $entity) {
       $this->attribRel($entity);
     }
     $this->string = substr($this->string, 0,strrpos($this->string,","));
