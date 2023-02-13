@@ -81,10 +81,10 @@ class GenerateClassField extends GenerateFile {
                 && strtolower($field["field_default"]) != "null" ) ? "\"" . trim($field["field_default"], "'") . "\"" : "null";    
 
     $this->string .= "    \"type\": \"" . $field["data_type"] . "\",
-    \"fieldType\": \"" . $field["field_type"] . "\",
+    \"field_type\": \"" . $field["field_type"] . "\",
     \"default\": " . $default . ",
     \"alias\": \"" . $field["alias"] . "\",
-    \"entityName\": \"" . $this->table["name"] . "\",
+    \"entity_name\": \"" . $this->table["name"] . "\",
 ";
   }
 
@@ -100,7 +100,7 @@ class GenerateClassField extends GenerateFile {
 
   protected function attribEntityRefName($field){
     if(($field["field_type"] == "mu") || ($field["field_type"] == "_u")){
-      $this->string .= "    \"entityRefName\": \"" . $field["referenced_table_name"] . "\",  
+      $this->string .= "    \"entity_ref_name\": \"" . $field["referenced_table_name"] . "\",  
 ";
     }
   }
@@ -133,7 +133,7 @@ class GenerateClassField extends GenerateFile {
       case "timestamp": $field["generic_type"] = "timestamp"; break;
       default: $field["generic_type"] = $field["data_type"];      
     }
-    $this->string .= "    \"dataType\": \"" . $field["generic_type"] . "\",  
+    $this->string .= "    \"data_type\": \"" . $field["generic_type"] . "\",  
 ";
   }
 
