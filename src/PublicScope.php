@@ -28,8 +28,8 @@ function public_scope() {
   }
 
   protected function body(){
-    foreach($this->container->getEntityNames() as $entityName){
-      $this->string .= "    '{$entityName}.rwx',  
+    foreach($this->container->getEntityNames() as $entity_name){
+      $this->string .= "    '{$entity_name}.rwx',  
 ";  
     }
     

@@ -56,7 +56,7 @@ class EntityTreeJsonElement extends GenerateEntity {
     if(is_null($tablesVisited)) $tablesVisited = array();
     array_push ($tablesVisited, $entity->getName());
     $fk = $entity->getFieldsFkNotReferenced($tablesVisited);
-    //$u_ = $entity->getFieldsOonNotReferenced($tablesVisited);
+    //$u_ = $entity->getFieldsOo_NotReferenced($tablesVisited);
 
     $this->fk($fk, $tablesVisited, $tab);
   }

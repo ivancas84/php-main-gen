@@ -20,7 +20,7 @@ class GenerateClassField extends GenerateFile {
       * $field->getAlias() //alias del field
      * $field["field_type"] //tipo del field
      */
-  protected $fieldType; //string. alias del field (debe ser unico para todos los fields de todas las tablas)
+  protected $field_type; //string. alias del field (debe ser unico para todos los fields de todas las tablas)
 
   public function __construct($table) {
     $this->table = $table;
@@ -99,7 +99,7 @@ class GenerateClassField extends GenerateFile {
 
 
   protected function attribEntityRefName($field){
-    if(($field["field_type"] == "mu") || ($field["field_type"] == "_u")){
+    if(($field["field_type"] == "mo") || ($field["field_type"] == "oo")){
       $this->string .= "    \"entity_ref_name\": \"" . $field["referenced_table_name"] . "\",  
 ";
     }
@@ -156,7 +156,7 @@ class GenerateClassField extends GenerateFile {
         }
       break;
 
-      case "fk": case "mu": case "_u":
+      case "fk": case "mo": case "oo":
         $field["subtype"] = "typeahead";
       break;
     }
