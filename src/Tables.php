@@ -120,11 +120,11 @@ class Tables {
         } else if ( ( $f["foreign_key"] ) && ( !$f["unique"] ) && ( !$f["primary_key"] ) ){
           if(in_array($f["referenced_table_name"], $this->reserved)) continue; //omitimos la tablas reservadas
           $f["unique"] = false;
-          $f["field_type"] = "mu";
+          $f["field_type"] = "mo";
         } else if ( ( $f["foreign_key"] ) && ( $f["unique"] ) && ( !$f["primary_key"] ) ) {
           if(in_array($f["referenced_table_name"], $this->reserved)) continue; //omitimos la tablas reservadas
           $f["unique"] = true;
-          $f["field_type"] = "_u";
+          $f["field_type"] = "oo";
         }
 
         array_push($fieldsInfo_, $f);

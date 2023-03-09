@@ -63,7 +63,7 @@ class ClassEntity extends GenerateFile{
     foreach($table["fields"] as $field){
       if($field["not_null"]) array_push($fields, $field["field_name"]);
     }
-    $this->string .= "    \"notNull\": [\"" . implode("\", \"", $fields) . "\"],
+    $this->string .= "    \"not_null\": [\"" . implode("\", \"", $fields) . "\"],
 ";
   }
 
@@ -98,7 +98,7 @@ class ClassEntity extends GenerateFile{
     }
 
     $value = (!count($fields)) ? "" : "\"" . implode("\", \"", $fields) . "\"";
-    $this->string .= "    \"mu\": [{$value}],
+    $this->string .= "    \"mo\": [{$value}],
 ";
   }
 
@@ -111,7 +111,7 @@ class ClassEntity extends GenerateFile{
     }
 
     $value = (!count($fields)) ? "" : "\"" . implode("\", \"", $fields) . "\"";
-    $this->string .= "    \"_u\": [{$value}],
+    $this->string .= "    \"oo\": [{$value}],
 ";
   }
 
