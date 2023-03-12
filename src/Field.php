@@ -43,7 +43,6 @@ class GenerateClassField extends GenerateFile {
       $this->attributes($field);
       $this->attribEntityRefName($field);
       $this->attribDataType($field);
-      $this->attribSubtype($field);
       $this->attribLength($field);
       $this->name($field);
       $this->endField();
@@ -137,32 +136,6 @@ class GenerateClassField extends GenerateFile {
 ";
   }
 
-  protected function attribSubtype(&$field){
-    switch($field["field_type"]){
-      case "pk":
-      case "nf":
-        switch($field["generic_type"]){
-          case "string": $field["subtype"] = "text"; break;
-          case "integer": $field["subtype"] = "integer"; break;
-          case "float": $field["subtype"] = "float"; break;
-          case "date": $field["subtype"] = "date"; break;
-          case "timestamp": $field["subtype"] = "timestamp"; break;
-          case "text": $field["subtype"] = "textarea"; break;
-          case "blob": $field["subtype"] = "file_db"; break;
-          case "boolean": $field["subtype"] = "checkbox"; break;
-          case "time": $field["subtype"] = "time"; break;
-          case "year": $field["subtype"] = "year"; break;
-          default: $field["subtype"] = false; break;
-        }
-      break;
-
-      case "fk": case "mo": case "oo":
-        $field["subtype"] = "typeahead";
-      break;
-    }
-    $this->string .= "    \"subtype\": \"" . $field["subtype"] . "\",  
-";
-  }
 
   protected function attribLength($field){
     if(empty($field["length"])) {;
@@ -171,12 +144,7 @@ class GenerateClassField extends GenerateFile {
         case "mediumtext": case "mediumblob": return $field["length"] = 16777215; //bytes (16MB)
         case "longtext": case "longblog": return $field["length"] = 4294967295; //bytes (4GB)
       }
-
-      switch($field["subtype"]){
-        //case "text": return $this->length = 45;
-        case "cuil": return $field["length"] = 11;
-        case "dni": return $field["length"] = 8;
-      }
+     
     }
     if(!empty($field["length"])) {
       $field["length"] = str_replace(",",".",$field["length"]);
