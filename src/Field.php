@@ -42,7 +42,7 @@ class GenerateClassField extends GenerateFile {
       $this->startField($field);
       $this->attributes($field);
       $this->attribEntityRefName($field);
-      $this->attribDataType($field);
+      $this->attribType($field);
       $this->attribLength($field);
       $this->name($field);
       $this->endField();
@@ -79,8 +79,7 @@ class GenerateClassField extends GenerateFile {
                 && $field["field_default"] != "" 
                 && strtolower($field["field_default"]) != "null" ) ? "\"" . trim($field["field_default"], "'") . "\"" : "null";    
 
-    $this->string .= "    \"type\": \"" . $field["data_type"] . "\",
-    \"field_type\": \"" . $field["field_type"] . "\",
+    $this->string .= "    \"field_type\": \"" . $field["field_type"] . "\",
     \"default\": " . $default . ",
     \"alias\": \"" . $field["alias"] . "\",
     \"entity_name\": \"" . $this->table["name"] . "\",
@@ -105,14 +104,14 @@ class GenerateClassField extends GenerateFile {
   }
 
 
-  protected function attribDataType(&$field){
+  protected function attribType(&$field){
     switch ( $field["data_type"] ) {
       case "smallint":
       case "mediumint":
       case "int":
       case "integer":
       case "serial":
-      case "bigint": $field["generic_type"] = "integer"; break;
+      case "bigint": $field["generic_type"] = "int"; break;
       case "tinyblob":
       case "blob":
       case "mediumblob":
@@ -120,19 +119,19 @@ class GenerateClassField extends GenerateFile {
       case "varchar":
       case "char":
       case "string":
-      case "tinytext": $field["generic_type"] = "string"; break;
+      case "text":
+      case "tinytext": $field["generic_type"] = "str"; break;
       case "boolean":
       case "bool":
-      case "tinyint": $field["generic_type"] = "boolean"; break;
+      case "tinyint": $field["generic_type"] = "bool"; break;
       case "float":
       case "real":
       case "decimal": $field["generic_type"] = "float"; break;
-      case "text": $field["generic_type"] = "text"; break;
       case "datetime":
-      case "timestamp": $field["generic_type"] = "timestamp"; break;
+      case "timestamp": $field["generic_type"] = "datetime"; break;
       default: $field["generic_type"] = $field["data_type"];      
     }
-    $this->string .= "    \"data_type\": \"" . $field["generic_type"] . "\",  
+    $this->string .= "    \"type\": \"" . $field["generic_type"] . "\",  
 ";
   }
 
@@ -153,6 +152,9 @@ class GenerateClassField extends GenerateFile {
     } 
   }
 
+  protected function remove_last_comma(){
+    $this->string = substr_replace($this->string, '', strrpos($this->string, ","), 1);
+  }
 
 
 
